@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import WordCloud from "./WordCloud";
+import "./skills.css";
 
 async function getSkills() {
   try {
