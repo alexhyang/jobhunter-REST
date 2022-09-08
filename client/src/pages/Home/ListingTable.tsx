@@ -20,7 +20,7 @@ export default function ListingTable(props: { data: IListing[] }) {
       </thead>
       <tbody>
         {props.data.map((posting) => (
-          <tr>
+          <tr key={posting.id}>
             <td>{parseInt(posting.id)}</td>
             <td><a href={posting.url}>{posting.position}</a></td>
             <td>{posting.level}</td>

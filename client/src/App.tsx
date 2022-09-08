@@ -36,6 +36,13 @@ function App() {
     );
   }, []);
 
+  /*
+  useEffect(() => {
+    localStorage.setItem('postings', JSON.stringify(data));
+    console.log(localStorage.getItem('postings'));
+  }, [data]);
+  */
+
   return (
     <div className="App">
       <Nav />

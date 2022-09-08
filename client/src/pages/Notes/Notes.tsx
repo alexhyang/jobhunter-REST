@@ -19,7 +19,7 @@ export default function Notes(props: { data: IListing[] }) {
         <tbody>
           {props.data.map((posting) =>
             posting.other ? (
-              <tr>
+              <tr key={posting.id}>
                 <td>{parseInt(posting.id)}</td>
                 <td>
                   <a href={posting.url}>{posting.position}</a>
@@ -32,4 +32,34 @@ export default function Notes(props: { data: IListing[] }) {
       </table>
     </>
   );
+  /*
+  const data = localStorage.getItem('postings');
+  return (
+    <>
+      <h1>Notes</h1>
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Position</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data !== null && data.length > 4 ? JSON.parse(data).map((posting: IListing) =>
+            posting.other ? (
+              <tr key={posting.id}>
+                <td>{parseInt(posting.id)}</td>
+                <td>
+                  <a href={posting.url}>{posting.position}</a>
+                </td>
+                <td>{posting.other}</td>
+              </tr>
+            ) : null
+          ): null}
+        </tbody>
+      </table>
+    </>
+  );
+  */
 }
