@@ -3,11 +3,11 @@ import { Routes, Route, Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import Nav from "./components/TopNav";
-import Home from "./components/Home";
-import Skills from "./components/Skills";
-import Notes from "./components/Notes";
-import NewPosting from "./components/NewPosting";
+import Nav from "./components/Nav";
+import Home from "./pages/Home/Home";
+import Skills from "./pages/Skills/Skills";
+import Notes from "./pages/Notes/Notes";
+import NewPosting from "./pages/NewPosting/NewPosting";
 
 function App() {
   return (
