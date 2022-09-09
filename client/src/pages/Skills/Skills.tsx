@@ -4,7 +4,7 @@ import "./skills.css";
 
 async function getSkills() {
   try {
-    let response = await fetch(
+    const response = await fetch(
       "http://alexhyang.herokuapp.com/jobhunter-app/skills/fetch"
     );
     return response.json();

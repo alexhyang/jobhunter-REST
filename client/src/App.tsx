@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -15,7 +15,7 @@ interface IListing {
 
 async function getPostings() {
   try {
-    let response = await fetch(
+    const response = await fetch(
       "http://alexhyang.herokuapp.com/jobhunter-app/fetch_all_postings"
     );
     return response.json();

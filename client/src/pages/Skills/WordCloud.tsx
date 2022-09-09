@@ -7,9 +7,9 @@ interface Props {
 type Skill = [number, string, number];
 
 function sortSkills(skills: { [key: string]: number }) {
-  let sortable: Skill[] = [];
+  const sortable: Skill[] = [];
   let key: number = 1;
-  for (let skill in skills) {
+  for (const skill in skills) {
     sortable.push([key, skill, skills[skill]]);
     key++;
   }
@@ -20,7 +20,7 @@ function sortSkills(skills: { [key: string]: number }) {
 }
 
 export default function WordCloud(props: Props) {
-  let skills: Skill[] = sortSkills(props.data);
+  const skills: Skill[] = sortSkills(props.data);
   console.log(skills);
   return (
     <div className="cloud-wrapper">
@@ -31,10 +31,10 @@ export default function WordCloud(props: Props) {
         data-show-value="true"
       >
         {skills.map(function (skill) {
-          let id: number = skill[0];
-          let name: string = skill[1];
-          let count: number = skill[2];
-          let size: number = Math.log(count) + 1;
+          const id: number = skill[0];
+          const name: string = skill[1];
+          const count: number = skill[2];
+          const size: number = Math.log(count) + 1;
           return (
             <li
               key={id}
