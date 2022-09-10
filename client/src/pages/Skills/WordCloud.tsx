@@ -8,7 +8,7 @@ type Skill = [number, string, number];
 
 function sortSkills(skills: { [key: string]: number }) {
   const sortable: Skill[] = [];
-  let key: number = 1;
+  let key = 1;
   for (const skill in skills) {
     sortable.push([key, skill, skills[skill]]);
     key++;
