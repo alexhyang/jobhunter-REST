@@ -181,7 +181,7 @@ export default function MUIForm() {
             )}
           />
         </Grid>
-        <Grid item>{data}</Grid>
+        {data ? <Grid item>{data}</Grid> : null}
         <Grid item>
           <Button type="submit" variant="outlined">
             Submit

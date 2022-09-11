@@ -54,6 +54,7 @@ function App() {
           <Route path="add_posting" element={<NewPosting />} />
         </Routes>
       </Container>
+      <div style={{display: "flex", justifyContent: "center", margin: "30px 0"}}>&copy; Alex Yang 2022</div>
     </div>
   );
 }
