@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { IFormValues } from "./interfaces";
 import { TYPE_OPTIONS, LEVEL_OPTIONS } from "./formSelectOptions";
@@ -13,10 +13,53 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 
 export default function MUIForm() {
-  const { control, handleSubmit } = useForm<IFormValues>();
+  const { control, handleSubmit, getValues } = useForm<IFormValues>();
   const [data, setData] = useState<string>("");
+  const [urlErrorStatus, setUrlErrorStatus] = useState<boolean>(true);
+  const [urlCheckResult, setUrlCheckResult] = useState<string>("");
   const onSubmit: SubmitHandler<IFormValues> = (data) =>
     setData(JSON.stringify(data));
+
+  const url = getValues("url");
+
+  useEffect(() => {
+    checkUrl();
+  }, [url]);
+
+  const checkUrl = () => {
+    if (getValues("url") === "") {
+      setUrlCheckResult("");
+    } else {
+      try {
+        const url = new URL(getValues("url"));
+        const jobKey = url.searchParams.get("jk");
+        if (jobKey !== null) {
+          fetch(`/jobhunter-app/add/check?jk=${jobKey}`)
+            .then((response) => response.json())
+            .then((result) => {
+              console.log(result);
+              if (result.posting_is_new) {
+                setUrlErrorStatus(false);
+                setUrlCheckResult("Posting is new");
+              } else {
+                setUrlErrorStatus(true);
+                setUrlCheckResult("Posting already exists");
+              }
+            })
+            .catch((error) => console.log("Error: ", error));
+        } else {
+          setUrlErrorStatus(true);
+          setUrlCheckResult(
+            "Couldn't find job key in query parameters (jk=...)"
+          );
+        }
+      } catch (error) {
+        console.log("Error: ", error);
+        setUrlErrorStatus(true);
+        setUrlCheckResult("Invalid URL");
+      }
+    }
+  };
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -27,11 +70,13 @@ export default function MUIForm() {
             control={control}
             render={({ field }) => (
               <TextField
+                error={urlErrorStatus}
                 required
                 fullWidth
                 label="Url"
                 type="url"
                 variant="filled"
+                helperText={urlCheckResult}
                 autoFocus
                 {...field}
               />

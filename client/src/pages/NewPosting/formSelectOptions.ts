@@ -13,7 +13,7 @@ export const LEVEL_OPTIONS = [
   { id: 1, value: "Unknown", label: "Unknown" },
   { id: 2, value: "Junior", label: "Junior (< 3 yrs)" },
   { id: 3, value: "Intermediate", label: "Intermediate (3 ~ 5 yrs)" },
-  { id: 4, value: "Senior", label: "Senior(> 5 yrs)" },
+  { id: 4, value: "Senior", label: "Senior (> 5 yrs)" },
   { id: 5, value: "Intern", label: "Intern" },
   { id: 6, value: "Other", label: "Other" },
 ];
