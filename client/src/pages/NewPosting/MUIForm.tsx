@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { IFormValues } from "./interfaces";
 import { TYPE_OPTIONS, LEVEL_OPTIONS } from "./formSelectOptions";
@@ -34,15 +34,8 @@ export default function MUIForm() {
   const onSubmit: SubmitHandler<IFormValues> = (data) =>
     setData(JSON.stringify(data));
 
-  const urlStr = getValues("url");
-
-  useEffect(() => {
-    if (urlStr !== "") {
-      checkUrl();
-    }
-  }, [urlStr]);
-
   const checkUrl = () => {
+    const urlStr = getValues("url");
     if (urlStr === "" || urlStr == undefined) {
       setUrlErrorStatus(false);
       setUrlCheckResult("");
@@ -51,7 +44,7 @@ export default function MUIForm() {
         const url = new URL(urlStr);
         const jobKey = url.searchParams.get("jk");
         if (jobKey !== null) {
-          fetch(`/jobhunter-app/add/check?jk=${jobKey}`)
+          fetch(`http://alexhyang.herokuapp.com/jobhunter-app/add/check?jk=${jobKey}`)
             .then((response) => response.json())
             .then((result) => {
               console.log(result);
@@ -96,6 +89,10 @@ export default function MUIForm() {
                 helperText={urlCheckResult}
                 autoFocus
                 {...field}
+                onBlur={() => {
+                  field.onBlur();
+                  checkUrl();
+                }}
               />
             )}
           />
