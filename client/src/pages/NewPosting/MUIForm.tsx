@@ -20,18 +20,21 @@ export default function MUIForm() {
   const onSubmit: SubmitHandler<IFormValues> = (data) =>
     setData(JSON.stringify(data));
 
-  const url = getValues("url");
+  const urlStr = getValues("url");
 
   useEffect(() => {
-    checkUrl();
-  }, [url]);
+    if (urlStr !== "") {
+      checkUrl();
+    }
+  }, [urlStr]);
 
   const checkUrl = () => {
-    if (getValues("url") === "") {
+    if (urlStr === "" || urlStr == undefined) {
+      setUrlErrorStatus(false);
       setUrlCheckResult("");
     } else {
       try {
-        const url = new URL(getValues("url"));
+        const url = new URL(urlStr);
         const jobKey = url.searchParams.get("jk");
         if (jobKey !== null) {
           fetch(`/jobhunter-app/add/check?jk=${jobKey}`)
@@ -76,13 +79,13 @@ export default function MUIForm() {
                 label="Url"
                 type="url"
                 variant="filled"
-                helperText={urlCheckResult}
                 autoFocus
                 {...field}
               />
             )}
           />
         </Grid>
+        {/*
         <Grid item xs={12} sm={4}>
           <Controller
             name="position"
@@ -226,6 +229,7 @@ export default function MUIForm() {
             )}
           />
         </Grid>
+        */}
         {data ? <Grid item>{data}</Grid> : null}
         <Grid item>
           <Button type="submit" variant="outlined">
