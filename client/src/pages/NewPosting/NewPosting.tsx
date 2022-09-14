@@ -6,7 +6,7 @@ import Form from "./Form";
 import MUIForm from "./MUIForm";
 
 export default function New() {
-  const [themeIsMUI, setTheme] = useState<boolean>(false);
+  const [themeIsMUI, setTheme] = useState<boolean>(true);
   return (
     <>
       <h1>
