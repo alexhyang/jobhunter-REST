@@ -13,9 +13,23 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 
 export default function MUIForm() {
-  const { control, handleSubmit, getValues } = useForm<IFormValues>();
+  const { control, handleSubmit, getValues } = useForm<IFormValues>({
+    defaultValues: {
+      url: "",
+      position: "",
+      company: "",
+      location: "",
+      type: ["Full-time"],
+      level: "Junior",
+      due_date: new Date().toISOString().split('T')[0],
+      responsibilities: "",
+      qualifications: "",
+      skills: "",
+      other: "",
+    },
+  });
   const [data, setData] = useState<string>("");
-  const [urlErrorStatus, setUrlErrorStatus] = useState<boolean>(true);
+  const [urlErrorStatus, setUrlErrorStatus] = useState<boolean>(false);
   const [urlCheckResult, setUrlCheckResult] = useState<string>("");
   const onSubmit: SubmitHandler<IFormValues> = (data) =>
     setData(JSON.stringify(data));
@@ -79,13 +93,13 @@ export default function MUIForm() {
                 label="Url"
                 type="url"
                 variant="filled"
+                helperText={urlCheckResult}
                 autoFocus
                 {...field}
               />
             )}
           />
         </Grid>
-        {/*
         <Grid item xs={12} sm={4}>
           <Controller
             name="position"
@@ -138,7 +152,12 @@ export default function MUIForm() {
               name="type"
               control={control}
               render={({ field }) => (
-                <Select labelId="type-select-label" label="TypeAAA" {...field}>
+                <Select
+                  multiple={true}
+                  labelId="type-select-label"
+                  label="TypeAAA"
+                  {...field}
+                >
                   {TYPE_OPTIONS.map((option) => (
                     <MenuItem key={option.id} value={option.value}>
                       {option.label}
@@ -229,7 +248,6 @@ export default function MUIForm() {
             )}
           />
         </Grid>
-        */}
         {data ? <Grid item>{data}</Grid> : null}
         <Grid item>
           <Button type="submit" variant="outlined">
