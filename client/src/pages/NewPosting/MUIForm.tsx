@@ -11,6 +11,7 @@ import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import Alert from "@mui/material/Alert";
 
 export default function MUIForm() {
   const { control, handleSubmit, getValues } = useForm<IFormValues>({
@@ -28,11 +29,38 @@ export default function MUIForm() {
       other: "",
     },
   });
-  const [data, setData] = useState<string>("");
+  const [dataJSON, setDataJSON] = useState<string>("");
   const [urlErrorStatus, setUrlErrorStatus] = useState<boolean>(false);
   const [urlCheckResult, setUrlCheckResult] = useState<string>("");
-  const onSubmit: SubmitHandler<IFormValues> = (data) =>
-    setData(JSON.stringify(data));
+  const [responseMessage, setResponseMessage] = useState<string>("");
+  const [alertType, setAlertType] = useState<
+    "error" | "success" | "info" | "warning" | undefined
+  >();
+
+  const onSubmit: SubmitHandler<IFormValues> = (data) => {
+    setDataJSON(JSON.stringify(data));
+    // fetch("http://alexhyang.herokuapp.com/jobhunter-app/api/add-posting", {
+    fetch("http://localhost:8000/jobhunter-app/api/add-posting", {
+      method: "POST",
+      body: dataJSON,
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => {
+        return response.ok ? response.json() : Promise.reject(response);
+      })
+      .then((response) => {
+        console.log(response);
+        setResponseMessage(response.message);
+        setAlertType("success");
+      })
+      .catch((error) => {
+        console.log("Error: ", error);
+        setAlertType("error");
+        setResponseMessage("No Permission!");
+      });
+  };
 
   const checkUrl = () => {
     const urlStr = getValues("url");
@@ -44,7 +72,9 @@ export default function MUIForm() {
         const url = new URL(urlStr);
         const jobKey = url.searchParams.get("jk");
         if (jobKey !== null) {
-          fetch(`http://alexhyang.herokuapp.com/jobhunter-app/add/check?jk=${jobKey}`)
+          fetch(
+            `http://alexhyang.herokuapp.com/jobhunter-app/add/check?jk=${jobKey}`
+          )
             .then((response) => response.json())
             .then((result) => {
               console.log(result);
@@ -74,6 +104,11 @@ export default function MUIForm() {
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={2}>
+        {responseMessage ? (
+          <Grid item xs={12}>
+            <Alert severity={alertType}>{responseMessage}</Alert>
+          </Grid>
+        ) : null}
         <Grid item xs={12}>
           <Controller
             name="url"
@@ -245,7 +280,7 @@ export default function MUIForm() {
             )}
           />
         </Grid>
-        {data ? <Grid item>{data}</Grid> : null}
+        {dataJSON ? <Grid item>{dataJSON}</Grid> : null}
         <Grid item>
           <Button type="submit" variant="outlined">
             Submit
