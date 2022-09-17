@@ -14,7 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 
 export default function MUIForm() {
-  const { control, handleSubmit, getValues } = useForm<IFormValues>({
+  const { control, handleSubmit, getValues, setValue } = useForm<IFormValues>({
     defaultValues: {
       url: "",
       position: "",
@@ -22,7 +22,7 @@ export default function MUIForm() {
       location: "",
       type: ["Full-time"],
       level: "Junior",
-      due_date: new Date().toISOString().split('T')[0],
+      due_date: new Date().toISOString().split("T")[0],
       responsibilities: "",
       qualifications: "",
       skills: "",
@@ -99,6 +99,20 @@ export default function MUIForm() {
         setUrlCheckResult("Invalid URL");
       }
     }
+  };
+
+  const convertToHTML = (text: string): string => {
+    return (
+      "- " +
+      text
+        .replaceAll(/[-·][\s]+/g, "")
+        .replaceAll(/(\s*<br>)*[\n]+/g, " <br>\n- ")
+    );
+  };
+
+  const formatTextArea = () => {
+    setValue("responsibilities", convertToHTML(getValues("responsibilities")));
+    setValue("qualifications", convertToHTML(getValues("qualifications")));
   };
 
   return (
@@ -281,6 +295,11 @@ export default function MUIForm() {
           />
         </Grid>
         {dataJSON ? <Grid item>{dataJSON}</Grid> : null}
+        <Grid item>
+          <Button type="button" variant="outlined" onClick={formatTextArea}>
+            Format Textareas
+          </Button>
+        </Grid>
         <Grid item>
           <Button type="submit" variant="outlined">
             Submit
