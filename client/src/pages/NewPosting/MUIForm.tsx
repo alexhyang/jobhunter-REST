@@ -26,6 +26,7 @@ export default function MUIForm() {
       responsibilities: "",
       qualifications: "",
       skills: "",
+      posting_password: "",
       other: "",
     },
   });
@@ -39,8 +40,8 @@ export default function MUIForm() {
 
   const onSubmit: SubmitHandler<IFormValues> = (data) => {
     setDataJSON(JSON.stringify(data));
-    // fetch("http://alexhyang.herokuapp.com/jobhunter-app/api/add-posting", {
-    fetch("http://localhost:8000/jobhunter-app/api/add-posting", {
+    fetch("http://alexhyang.herokuapp.com/jobhunter-app/api/add-posting", {
+      // fetch("http://localhost:8000/jobhunter-app/api/add-posting", {
       method: "POST",
       body: dataJSON,
       headers: {
@@ -287,10 +288,41 @@ export default function MUIForm() {
         </Grid>
         <Grid item xs={12}>
           <Controller
+            name="skills"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                fullWidth
+                required
+                label="Skills"
+                variant="filled"
+                {...field}
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Controller
             name="other"
             control={control}
             render={({ field }) => (
               <TextField fullWidth label="Other" variant="filled" {...field} />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Controller
+            name="posting_password"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                fullWidth
+                required
+                label="Password"
+                type="password"
+                variant="filled"
+                {...field}
+              />
             )}
           />
         </Grid>
@@ -301,7 +333,7 @@ export default function MUIForm() {
           </Button>
         </Grid>
         <Grid item>
-          <Button type="submit" variant="outlined">
+          <Button type="submit" variant="outlined" disabled={urlErrorStatus}>
             Submit
           </Button>
         </Grid>

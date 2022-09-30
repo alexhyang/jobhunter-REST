@@ -11,6 +11,7 @@ export interface IFormValues {
   responsibilities: string;
   qualifications: string;
   skills: string;
+  posting_password: string;
   other?: string;
 }
 
