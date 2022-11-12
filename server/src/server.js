@@ -1,26 +1,26 @@
-import express from "express";
-import cors from "cors";
-import * as dotenv from "dotenv";
+const express = require("express");
+const cors = require("cors");
+const logger = require("morgan");
+const indexRouter = require("./routes/index");
+const postingRouter = require("./routes/posting");
 
-dotenv.config();
-// console.log(process.env);
-
+const port = process.env.PORT || 8000;
 const app = express();
+
 app.use(cors());
+app.use(logger("dev"));
+app.use("/", indexRouter);
+app.use("/posting", postingRouter);
 
-const logger = (req, res, next) => {
-  console.log("LOGGED");
-  next();
-};
-
-app.use(logger);
-
-app.get("/", (req, res) => {
-  res.send("connected");
-});
-
-const port = process.env.PORT || 3000;
-
+// Register api routes
+// app.use("/api/postings
+// app.use("/api/postings/add
+// app.use("/api/posting/[:id]
+// app.use("/api/skills
+app.use("*", (req, res) => res.status(404).json({ error: "not found" }));
 app.listen(port, () => {
-  console.log("Server listening the port http://localhost:" + port);
+  console.log(`Server listening to port ${port}`);
 });
+
+module.exports = app;
+// or exports.app = app;
