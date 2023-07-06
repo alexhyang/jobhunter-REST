@@ -31,7 +31,6 @@ let postingSchema = new mongoose.Schema({
   skills: { type: String, required: true },
   postingUrl: { type: String, required: true },
   other: { type: String },
-  password: { type: String, required: true },
 });
 
 const Posting = mongoose.model('Posting', postingSchema);
