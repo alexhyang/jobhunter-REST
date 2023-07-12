@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Nav, Footer } from "components";
 import { Home, Skills, Notes, NewPosting } from "pages";
 
+import Test from "pages/Test";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="skills" element={<Skills />} />
           <Route path="notes" element={<Notes />} />
           <Route path="add_posting" element={<NewPosting />} />
+          <Route path="test" element={<Test />} />
         </Routes>
       </Container>
       <Footer />
