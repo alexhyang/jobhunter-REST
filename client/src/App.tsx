@@ -1,14 +1,11 @@
-import React  from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import Nav from "components/Nav";
-import Footer from "components/Footer";
-import Home from "pages/Home";
-import Skills from "pages/Skills";
-import Notes from "pages/Notes";
-import NewPosting from "pages/NewPosting";
+import { Nav, Footer } from "components";
+import { Home, Skills, Notes, NewPosting } from "pages";
+
 
 function App() {
   return (
