@@ -1,5 +1,17 @@
 export interface IListing {
-  [key: string]: string;
+  _id: number;
+  jobTitle: string;
+  company: string;
+  location: string;
+  jobLevel: string[];
+  // TODO: jobLevel: string;
+  jobType: string[];
+  applicationDueDate: Date;
+  responsibilities: string[];
+  qualifications: string[];
+  skills: string[];
+  postingUrl: string;
+  other?: string;
 }
 
 // Skill: id, name, count
