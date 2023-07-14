@@ -11,7 +11,7 @@ export default function ListingTable(props: { data: IListing[] }) {
       <thead>
         <tr>
           <th>ID</th>
-          <th>Position</th>
+          <th>Title</th>
           <th>Level</th>
           <th>Company</th>
           <th>Location</th>
