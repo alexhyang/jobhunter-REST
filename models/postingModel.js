@@ -25,10 +25,12 @@ let postingSchema = new mongoose.Schema({
     ],
     default: "Full Time",
   },
+  // === TODO: check types ===
   applicationDueDate: { type: Date, required: true },
   responsibilities: { type: String, required: true },
   qualifications: { type: String, required: true },
   skills: { type: String, required: true },
+  // ===
   postingUrl: { type: String, required: true },
   other: { type: String },
 });
