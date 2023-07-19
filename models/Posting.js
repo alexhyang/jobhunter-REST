@@ -8,7 +8,7 @@ let postingSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: ["Junior", "Intermediate", "Senior", "Intern", "Unknown"],
-    default: "Junior",
+    default: "Junior"
   },
   jobType: {
     type: String,
@@ -21,9 +21,9 @@ let postingSchema = new mongoose.Schema({
       "Contract",
       "Intership",
       "Co-op",
-      "Other",
+      "Other"
     ],
-    default: "Full Time",
+    default: "Full Time"
   },
   // === TODO: check types ===
   applicationDueDate: { type: Date, required: true },
@@ -32,9 +32,9 @@ let postingSchema = new mongoose.Schema({
   skills: { type: String, required: true },
   // ===
   postingUrl: { type: String, required: true },
-  other: { type: String },
+  other: { type: String }
 });
 
-const Posting = mongoose.model('Posting', postingSchema);
+const Posting = mongoose.model("Posting", postingSchema);
 
 module.exports = Posting;
