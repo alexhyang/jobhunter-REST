@@ -1,8 +1,6 @@
 const express = require("express");
-const PostingController = require("../controllers/PostingController");
-// const { client } = require("../db/conn");
-
 const router = express.Router();
+const PostingController = require("../controllers/PostingController");
 
 router.post("/postings", PostingController.createPosting);
 router.get("/postings", PostingController.getAllPostings);

@@ -1,10 +1,10 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv").config();
 const morgan = require("morgan");
 
-const { connect } = require("./db/conn");
-const apiRouter = require("./routes/apiRouter");
+const postingRoutes = require("./routes/postingRoutes");
 
 const app = express();
 
@@ -13,11 +13,21 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
-// Routes
-connect();
-app.use("/api", apiRouter);
-app.use("*", (req, res) => res.status(404).json({ error: "Not Found" }));
+console.log(process.env.MONGO_URI);
 
+// Database connection
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB", error);
+  });
+
+// Routes
+app.use("/api", postingRoutes);
+app.use("*", (req, res) => res.status(404).json({ error: "Not Found" }));
 
 // Start the server
 const port = process.env.PORT || 8000;
