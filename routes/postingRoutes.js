@@ -6,6 +6,6 @@ router.post("/postings", PostingController.createPosting);
 router.get("/postings", PostingController.getAllPostings);
 router.get("/postings/:id", PostingController.getPostingById);
 router.put("/postings/:id", PostingController.updatePostingById);
-router.delete("/postings/:id", PostingController.deleteUserById);
+router.delete("/postings/:id", PostingController.deletePostingById);
 
 module.exports = router;
