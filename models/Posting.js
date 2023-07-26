@@ -11,26 +11,24 @@ let postingSchema = new mongoose.Schema({
     default: "Junior"
   },
   jobType: {
-    type: String,
+    type: [String],
     required: true,
     enum: [
-      "Full Time",
-      "Part Time",
+      "Full-time",
+      "Part-time",
       "Remote",
       "Temporary",
       "Contract",
-      "Intership",
+      "Internship",
       "Co-op",
       "Other"
     ],
     default: "Full Time"
   },
-  // === TODO: check types ===
   applicationDueDate: { type: Date, required: true },
-  responsibilities: { type: String, required: true },
-  qualifications: { type: String, required: true },
-  skills: { type: String, required: true },
-  // ===
+  responsibilities: { type: [String], required: true },
+  qualifications: { type: [String], required: true },
+  skills: { type: [String], required: true },
   postingUrl: { type: String, required: true },
   other: { type: String }
 });
