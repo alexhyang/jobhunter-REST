@@ -13,8 +13,8 @@ const PostingController = {
 
   getAllPostings: async (req, res) => {
     try {
-      const postings = await Posting.find();
-      return res.status(200).json(postings);
+      const postings = await Posting.find().sort({applicationDueDate: -1});
+      res.status(200).json(postings);
     } catch (error) {
       console.error("Error retrieving postings:", error);
       res.status(500).json({ error: "Failed to retrieve postings" });
@@ -27,7 +27,7 @@ const PostingController = {
       if (!posting) {
         return res.status(404).json({ error: "Posting not found" });
       }
-      return status(200).json(posting);
+      res.status(200).json(posting);
     } catch (error) {
       console.error("Error retrieving posting:", error);
       res.status(500).json({ error: "Failed to retrieve posting" });
@@ -42,7 +42,7 @@ const PostingController = {
       if (!updatedPosting) {
         return res.status(404).json({ error: "Posting not found" });
       }
-      return status(200).json(updatedPosting);
+      status(200).json(updatedPosting);
     } catch (error) {
       console.error("Error updating posting:", error);
       res.status(500).json({ error: "Failed to update posting" });
@@ -55,7 +55,7 @@ const PostingController = {
       if (!deletedPosting) {
         return res.status(404).json({ error: "Posting not found" });
       }
-      return status(200).json({ message: "Posting deleted succcessfully" });
+      status(200).json({ message: "Posting deleted succcessfully" });
     } catch (error) {
       console.error("Error deleting posting:", error);
       res.status(500).json({ error: "Failed to delete posting" });
