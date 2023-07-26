@@ -16,6 +16,7 @@ app.use(morgan("dev"));
 console.log(process.env.MONGO_URI);
 
 // Database connection
+mongoose.set("strictQuery", false);
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
