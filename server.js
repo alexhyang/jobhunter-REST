@@ -5,6 +5,7 @@ const dotenv = require("dotenv").config();
 const morgan = require("morgan");
 
 const postingRoutes = require("./routes/postingRoutes");
+const summaryRoutes = require("./routes/summaryRoutes");
 
 const app = express();
 
@@ -27,7 +28,8 @@ mongoose
   });
 
 // Routes
-app.use("/api", postingRoutes);
+app.use("/api/postings", postingRoutes);
+app.use("/api/summaries", summaryRoutes);
 app.use("*", (req, res) => res.status(404).json({ error: "Not Found" }));
 
 // Start the server
