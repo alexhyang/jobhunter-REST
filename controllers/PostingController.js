@@ -1,5 +1,35 @@
 const Posting = require("../models/Posting");
 
+const generateSortQuery = (sortCriteria) => {
+  if (sortCriteria == undefined) {
+    return {};
+  }
+
+  let sortQuery = {};
+  for (const criteria of sortCriteria.split(",")) {
+    if (criteria.startsWith("-")) {
+      sortQuery[criteria.slice(1)] = -1;
+    } else {
+      sortQuery[criteria] = 1;
+    }
+  }
+
+  return sortQuery;
+};
+
+const generateProjQuery = (fields) => {
+  if (fields == undefined) {
+    return {};
+  }
+
+  let projQuery = {};
+  for (const field of fields.split(",")) {
+    projQuery[field] = 1;
+  }
+
+  return projQuery;
+};
+
 const PostingController = {
   createPosting: async (req, res) => {
     try {
@@ -12,8 +42,18 @@ const PostingController = {
   },
 
   getAllPostings: async (req, res) => {
+    const { sort, limit, fields } = req.query;
+
+    // TODO: complete filter query later
+    const filterQuery = {};
+    const projQuery = generateProjQuery(fields);
+    const sortQuery = generateSortQuery(sort);
+    let limitCount = limit || 30;
+
     try {
-      const postings = await Posting.find().sort({applicationDueDate: -1});
+      const postings = await Posting.find(filterQuery, projQuery)
+        .sort(sortQuery)
+        .limit(limitCount);
       res.status(200).json(postings);
     } catch (error) {
       console.error("Error retrieving postings:", error);
@@ -36,9 +76,13 @@ const PostingController = {
 
   updatePostingById: async (req, res) => {
     try {
-      const updatedPosting = await Posting.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-      });
+      const updatedPosting = await Posting.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+          new: true
+        }
+      );
       if (!updatedPosting) {
         return res.status(404).json({ error: "Posting not found" });
       }
@@ -60,7 +104,7 @@ const PostingController = {
       console.error("Error deleting posting:", error);
       res.status(500).json({ error: "Failed to delete posting" });
     }
-  },
+  }
 };
 
 module.exports = PostingController;
