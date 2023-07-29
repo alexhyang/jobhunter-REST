@@ -1,31 +1,49 @@
 const Posting = require("../models/Posting");
+const { generateSortQuery } = require("../utils/queryUtils");
 
 const SummaryController = {
   getSkills: async (req, res) => {
-    const { option } = req.query;
-    if (option !== undefined && option === "unique") {
+    try {
+      const postings = await Posting.distinct("skills");
+      return res.status(200).json(postings);
+    } catch (error) {
+      console.error("Error retrieving unique skills:", error);
+      return res
+        .status(500)
+        .json({ error: "Failed to retrieve unique skills" });
+    }
+  },
+
+  getSkillCounts: async (req, res) => {
+    const { sort, limit, skillName } = req.query;
+    if (skillName !== undefined) {
+      const skill = skillName.replace(/\++/g, " ");
       try {
-        const postings = await Posting.distinct("skills");
-        return res.status(200).json(postings);
+        const skillCount = await Posting.aggregate([
+          { $match: { skills: { $elemMatch: { $eq: skill } } } },
+          { $count: "count" }
+        ]);
+        return res.status(200).json(skillCount);
       } catch (error) {
-        console.error("Error retrieving unique skills:", error);
-        return res.status(500).json({ error: "Failed to retrieve unique skills" });
+        console.error("Error retrieving skill count:", error);
+        return res
+          .status(500)
+          .json({ error: "Failed to retrieve skill count" });
       }
     }
 
-    const projectSkills = { $project: { skills: 1 } };
-    const unwindStage = { $unwind: "$skills" };
-    const groupStage = { $group: { _id: "$skills", count: { $count: {} } } };
-    const sortStage = { $sort: { count: -1 } };
-    const limitStage = { $limit: 30 };
-
     const aggregateStages = [
-      projectSkills,
-      unwindStage,
-      groupStage,
-      sortStage,
-      limitStage
+      { $project: { skills: 1 } },
+      { $unwind: "$skills" },
+      { $group: { _id: "$skills", count: { $count: {} } } }
     ];
+    if (sort !== undefined) {
+      const sortQuery = generateSortQuery(sort);
+      aggregateStages.push({ $sort: sortQuery });
+    }
+    if (limit !== undefined) {
+      aggregateStages.push({ $limit: parseInt(limit) });
+    }
 
     try {
       const postings = await Posting.aggregate(aggregateStages);
